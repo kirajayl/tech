@@ -170,6 +170,7 @@ function Navbar() {
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           <a href="#" className="flex items-center gap-2">
+            <img src="/logo.jpg" alt="1% Tech" className="h-8 w-8 rounded-full object-cover" />
             <span className="text-xl font-bold tracking-tight">
               1% Tech
             </span>
@@ -912,6 +913,7 @@ function Footer() {
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
+            <img src="/logo.jpg" alt="1% Tech" className="h-7 w-7 rounded-full object-cover" />
             <span className="text-lg font-bold tracking-tight">1% Tech</span>
           </div>
 
