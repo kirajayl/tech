@@ -21,9 +21,7 @@ import {
   Sparkles,
   Building2,
   UtensilsCrossed,
-  Factory,
   Landmark,
-  Truck,
   ShoppingCart,
   GraduationCap,
   Megaphone,
@@ -170,9 +168,9 @@ function Navbar() {
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           <a href="#" className="flex items-center gap-2">
-            <img src="/logo.jpg" alt="1% Tech" width={32} height={32} className="h-8 w-8 rounded-full object-cover" />
+            <img src="/AI Labs Logo.png" alt="AI Labs" width={32} height={32} className="h-8 w-8 rounded-full object-cover" />
             <span className="text-xl font-bold tracking-tight">
-              1% Tech
+              AI Labs
             </span>
           </a>
 
@@ -534,23 +532,6 @@ const industries = [
     ],
   },
   {
-    id: "manufacturing",
-    icon: Factory,
-    label: "Manufacturing",
-    tagline: "YOUR ANALYST THAT NEVER SLEEPS",
-    desc: "Real-time OEE tracking, predictive maintenance alerts, and production line optimization.",
-    before: "4 hrs",
-    beforeLabel: "Detect machine failure",
-    after: "Instant",
-    afterLabel: "Downtime reduction",
-    savings: "62%",
-    metrics: [
-      { label: "OEE", value: "87.3%", highlight: true },
-      { label: "Quality", value: "99.2%", highlight: false },
-      { label: "Availability", value: "94.1%", highlight: false },
-    ],
-  },
-  {
     id: "finance",
     icon: Landmark,
     label: "Investment & Finance",
@@ -565,23 +546,6 @@ const industries = [
       { label: "Pipeline", value: "RM 24M", highlight: false },
       { label: "IRR", value: "22.4%", highlight: true },
       { label: "Auto Reports", value: "6", highlight: false },
-    ],
-  },
-  {
-    id: "logistics",
-    icon: Truck,
-    label: "Logistics & Supply Chain",
-    tagline: "EVERY ROUTE, OPTIMIZED",
-    desc: "Fleet tracking, route optimization, delivery ETAs, and fuel cost reduction — powered by real-time AI.",
-    before: "90 min",
-    beforeLabel: "Route planning",
-    after: "3 min",
-    afterLabel: "Planning time",
-    savings: "97%",
-    metrics: [
-      { label: "Fuel Savings", value: "+18%", highlight: true },
-      { label: "On-time Delivery", value: "99.2%", highlight: false },
-      { label: "Routes Optimized", value: "30/day", highlight: false },
     ],
   },
   {
@@ -839,7 +803,7 @@ function WhyUs() {
       <div className="max-w-6xl mx-auto px-6">
         <FadeUp>
           <p className="text-sm uppercase tracking-[0.3em] font-medium text-muted-foreground mb-4">
-            Why 1% Tech
+            Why AI Labs
           </p>
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight">
             Built different
@@ -913,8 +877,8 @@ function Footer() {
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
-            <img src="/logo.jpg" alt="1% Tech" width={28} height={28} className="h-7 w-7 rounded-full object-cover" />
-            <span className="text-lg font-bold tracking-tight">1% Tech</span>
+            <img src="/AI Labs Logo.png" alt="AI Labs" width={28} height={28} className="h-7 w-7 rounded-full object-cover" />
+            <span className="text-lg font-bold tracking-tight">AI Labs</span>
           </div>
 
           <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
@@ -936,7 +900,7 @@ function Footer() {
           </div>
 
           <p className="text-xs text-muted-foreground">
-            © 2026 1% Tech. All rights reserved.
+            © 2026 AI Labs. All rights reserved.
           </p>
         </div>
 
