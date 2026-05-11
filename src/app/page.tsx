@@ -167,12 +167,22 @@ function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
-          <a href="#" className="flex items-center gap-2">
-            <img src="/AI Labs Logo.png" alt="AI Labs" width={32} height={32} className="h-8 w-8 rounded-full object-cover" />
-            <span className="text-xl font-bold tracking-tight">
-              AI Labs
-            </span>
-          </a>
+          <div className="flex items-center gap-4">
+            <a href="#" className="flex items-center gap-2">
+              <img src="/AI Labs Logo.png" alt="AI Labs" width={32} height={32} className="h-8 w-8 rounded-full object-cover" />
+              <span className="text-xl font-bold tracking-tight">
+                AI Labs
+              </span>
+            </a>
+            <a
+              href="https://the1percentclub.net"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden sm:inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors border border-border rounded-md px-2 py-1"
+            >
+              ← 1% Club
+            </a>
+          </div>
 
           {/* Desktop */}
           <div className="hidden lg:flex items-center gap-8">
@@ -282,7 +292,7 @@ function Hero() {
             </a>
             <a
               href="#services"
-              className="inline-flex items-center justify-center rounded-lg border border-border px-8 py-4 text-base font-medium hover:bg-muted transition-colors"
+              className="inline-flex items-center justify-center rounded-lg border border-border bg-white px-8 py-4 text-base font-medium hover:bg-muted transition-colors"
             >
               What We Do ↓
             </a>
