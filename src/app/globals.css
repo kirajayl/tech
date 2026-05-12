@@ -10,6 +10,17 @@
   --color-accent-foreground: #ffffff;
 }
 
+/* ── Dark mode overrides ── */
+html.dark {
+  --color-background: #0a0a0a;
+  --color-foreground: #ededed;
+  --color-muted: #1a1a1a;
+  --color-muted-foreground: #a3a3a3;
+  --color-border: #262626;
+  --color-accent: #ededed;
+  --color-accent-foreground: #0a0a0a;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -91,11 +102,23 @@ body {
   background-clip: text;
 }
 
+html.dark .gradient-text {
+  background: linear-gradient(135deg, #ededed 0%, #737373 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 /* Glass card effect */
 .glass-card {
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+html.dark .glass-card {
+  background: rgba(10, 10, 10, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* Service card hover */
@@ -106,6 +129,10 @@ body {
 .service-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+html.dark .service-card:hover {
+  box-shadow: 0 20px 40px rgba(255, 255, 255, 0.04);
 }
 
 /* Industry tab */

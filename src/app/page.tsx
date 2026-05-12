@@ -26,7 +26,12 @@ import {
   GraduationCap,
   Megaphone,
   HomeIcon,
+  Sun,
+  Moon,
+  Globe,
 } from "lucide-react";
+import { t } from "./translations";
+import { useLang, LangProvider } from "./lang-context";
 
 /* ──────────────────────────── ANIMATION HOOK ──────────────────────────── */
 function useInView(threshold = 0.15) {
@@ -142,6 +147,7 @@ function AnimatedCounter({
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { lang, setLang, dark, setDark } = useLang();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -150,18 +156,18 @@ function Navbar() {
   }, []);
 
   const links = [
-    { label: "About", href: "#about" },
-    { label: "Services", href: "#services" },
-    { label: "Industries", href: "#industries" },
-    { label: "Process", href: "#process" },
-    { label: "Why Us", href: "#why-us" },
+    { label: t("nav.about", lang), href: "#about" },
+    { label: t("nav.services", lang), href: "#services" },
+    { label: t("nav.industries", lang), href: "#industries" },
+    { label: t("nav.process", lang), href: "#process" },
+    { label: t("nav.whyUs", lang), href: "#why-us" },
   ];
 
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-white/90 backdrop-blur-md shadow-sm border-b border-border"
+          ? "bg-background/90 backdrop-blur-md shadow-sm border-b border-border"
           : "bg-transparent"
       }`}
     >
@@ -185,7 +191,7 @@ function Navbar() {
           </div>
 
           {/* Desktop */}
-          <div className="hidden lg:flex items-center gap-8">
+          <div className="hidden lg:flex items-center gap-6">
             {links.map((l) => (
               <a
                 key={l.href}
@@ -195,27 +201,68 @@ function Navbar() {
                 {l.label}
               </a>
             ))}
+
+            {/* Language toggle */}
+            <button
+              onClick={() => setLang(lang === "en" ? "cn" : "en")}
+              className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors border border-border rounded-md px-2 py-1"
+              aria-label="Toggle language"
+            >
+              <Globe size={14} />
+              {lang === "en" ? "EN" : "中文"}
+            </button>
+
+            {/* Dark mode toggle */}
+            <button
+              onClick={() => setDark(!dark)}
+              className="inline-flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors border border-border rounded-md p-1.5"
+              aria-label="Toggle dark mode"
+            >
+              {dark ? <Sun size={16} /> : <Moon size={16} />}
+            </button>
+
             <a
               href="#contact"
               className="inline-flex items-center justify-center rounded-lg bg-foreground text-background px-5 py-2.5 text-sm font-medium hover:opacity-90 transition-opacity"
             >
-              Start a Project
+              {t("nav.startProject", lang)}
             </a>
           </div>
 
-          {/* Mobile toggle */}
-          <button
-            className="lg:hidden p-2"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle menu"
-          >
-            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          {/* Mobile: toggles + hamburger */}
+          <div className="lg:hidden flex items-center gap-2">
+            {/* Language toggle (mobile) */}
+            <button
+              onClick={() => setLang(lang === "en" ? "cn" : "en")}
+              className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors border border-border rounded-md px-2 py-1"
+              aria-label="Toggle language"
+            >
+              <Globe size={14} />
+              {lang === "en" ? "EN" : "中文"}
+            </button>
+
+            {/* Dark mode toggle (mobile) */}
+            <button
+              onClick={() => setDark(!dark)}
+              className="inline-flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors border border-border rounded-md p-1.5"
+              aria-label="Toggle dark mode"
+            >
+              {dark ? <Sun size={16} /> : <Moon size={16} />}
+            </button>
+
+            <button
+              className="p-2"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              aria-label="Toggle menu"
+            >
+              {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile menu */}
         {mobileOpen && (
-          <div className="lg:hidden bg-white border-t border-border pb-6">
+          <div className="lg:hidden bg-background border-t border-border pb-6">
             {links.map((l) => (
               <a
                 key={l.href}
@@ -232,7 +279,7 @@ function Navbar() {
                 className="block text-center rounded-lg bg-foreground text-background px-5 py-2.5 text-sm font-medium"
                 onClick={() => setMobileOpen(false)}
               >
-                Start a Project
+                {t("nav.startProject", lang)}
               </a>
             </div>
           </div>
@@ -244,8 +291,9 @@ function Navbar() {
 
 /* ──────────────────────────── HERO ──────────────────────────── */
 function Hero() {
+  const { lang } = useLang();
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white py-24 md:py-32">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background py-24 md:py-32">
       {/* Subtle grid background */}
       <div
         className="absolute inset-0 opacity-[0.03]"
@@ -259,22 +307,21 @@ function Hero() {
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center pt-20">
         <FadeUp>
           <p className="text-sm uppercase tracking-[0.3em] font-medium text-muted-foreground mb-6">
-            AI-Powered Operations
+            {t("hero.tagline", lang)}
           </p>
         </FadeUp>
 
         <FadeUp delay={0.1}>
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1]">
-            The 1% that changes
+            {t("hero.title1", lang)}
             <br />
-            <span className="gradient-text">everything.</span>
+            <span className="gradient-text">{t("hero.title2", lang)}</span>
           </h1>
         </FadeUp>
 
         <FadeUp delay={0.2}>
           <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            We solve the problems that hold your business back. AI systems that
-            automate your operations — so you can focus on growth.
+            {t("hero.desc", lang)}
           </p>
         </FadeUp>
 
@@ -284,7 +331,7 @@ function Hero() {
               href="#contact"
               className="inline-flex items-center justify-center rounded-lg bg-foreground text-background px-8 py-4 text-base font-medium hover:opacity-90 transition-all group"
             >
-              Start a Project
+              {t("nav.startProject", lang)}
               <ArrowRight
                 size={18}
                 className="ml-2 group-hover:translate-x-1 transition-transform"
@@ -292,16 +339,16 @@ function Hero() {
             </a>
             <a
               href="#services"
-              className="inline-flex items-center justify-center rounded-lg border border-border bg-white px-8 py-4 text-base font-medium hover:bg-muted transition-colors"
+              className="inline-flex items-center justify-center rounded-lg border border-border bg-background px-8 py-4 text-base font-medium hover:bg-muted transition-colors"
             >
-              What We Do ↓
+              {t("hero.whatWeDo", lang)}
             </a>
           </div>
         </FadeUp>
 
         <FadeUp delay={0.5}>
           <p className="mt-12 text-xs text-muted-foreground/60 uppercase tracking-widest">
-            Powered by enterprise-grade AI
+            {t("hero.poweredBy", lang)}
           </p>
           <div className="mt-4 flex items-center justify-center gap-8 opacity-40">
             {["OpenAI", "Anthropic", "Google", "Meta AI", "Mistral"].map(
@@ -329,26 +376,27 @@ function Hero() {
 
 /* ──────────────────────────── ABOUT ──────────────────────────── */
 function About() {
+  const { lang } = useLang();
   const values = [
     {
       num: "01",
-      title: "Ship it",
-      desc: "Working software beats perfect plans",
+      title: t("about.v1.title", lang),
+      desc: t("about.v1.desc", lang),
     },
     {
       num: "02",
-      title: "Solve the real problem",
-      desc: "We don't sell AI for AI's sake",
+      title: t("about.v2.title", lang),
+      desc: t("about.v2.desc", lang),
     },
     {
       num: "03",
-      title: "Earn the trust",
-      desc: "Your operations are sacred",
+      title: t("about.v3.title", lang),
+      desc: t("about.v3.desc", lang),
     },
     {
       num: "04",
-      title: "Stay curious",
-      desc: "Every industry has patterns to decode",
+      title: t("about.v4.title", lang),
+      desc: t("about.v4.desc", lang),
     },
   ];
 
@@ -357,34 +405,29 @@ function About() {
       <div className="max-w-6xl mx-auto px-6">
         <FadeUp>
           <p className="text-sm uppercase tracking-[0.3em] font-medium text-muted-foreground mb-4">
-            About Us
+            {t("about.label", lang)}
           </p>
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight leading-tight">
-            We see what others miss.
+            {t("about.title", lang)}
           </h2>
         </FadeUp>
 
         <FadeUp delay={0.1}>
           <p className="mt-6 text-lg text-muted-foreground max-w-3xl leading-relaxed">
-            Every business we walked into had the same problem — smart people
-            buried in repetitive work. Property managers copying prices between
-            platforms. Restaurant owners guessing tomorrow's stock order. Factory
-            supervisors staring at dashboards they couldn't act on fast enough.
+            {t("about.p1", lang)}
           </p>
         </FadeUp>
 
         <FadeUp delay={0.2}>
           <p className="mt-6 text-lg text-muted-foreground max-w-3xl leading-relaxed">
-            The tools existed. AI was there. But nobody was wiring it into the
-            actual day-to-day operations where it mattered. So we started
-            building.
+            {t("about.p2", lang)}
           </p>
         </FadeUp>
 
         <div className="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {values.map((v, i) => (
             <FadeUp key={v.num} delay={0.1 * i}>
-              <div className="p-8 rounded-xl bg-white border border-border service-card h-full flex flex-col">
+              <div className="p-8 rounded-xl bg-background border border-border service-card h-full flex flex-col">
                 <span className="text-3xl font-bold text-muted-foreground/30">
                   {v.num}
                 </span>
@@ -400,72 +443,36 @@ function About() {
 }
 
 /* ──────────────────────────── SERVICES ──────────────────────────── */
-const services = [
-  {
-    icon: Zap,
-    title: "AI Workflow Automation",
-    subtitle: "WIRE AI INTO YOUR DAILY OPS",
-    desc: "Automate repetitive tasks, route decisions, and trigger actions across your tools without manual handoffs.",
-    color: "#f59e0b",
-  },
-  {
-    icon: Monitor,
-    title: "Custom Platform Development",
-    subtitle: "BUILT AROUND YOUR BUSINESS",
-    desc: "Full-stack dashboards, APIs, and integrations engineered for your exact workflow — designed to scale.",
-    color: "#3b82f6",
-  },
-  {
-    icon: BarChart3,
-    title: "Business Diagnostics & AI Strategy",
-    subtitle: "DECODE YOUR BUSINESS",
-    desc: "Structured AI reports that diagnose your operations, map growth paths, and prepare you for capital readiness.",
-    color: "#8b5cf6",
-  },
-  {
-    icon: Link2,
-    title: "System Integration",
-    subtitle: "ONE INTELLIGENT PIPELINE",
-    desc: "Connect your existing tools into a single workflow. We bridge the gaps so data flows seamlessly.",
-    color: "#10b981",
-  },
-  {
-    icon: PenTool,
-    title: "AI Content Engine",
-    subtitle: "ALWAYS-ON MARKETING",
-    desc: "Auto-aggregate trends, generate content, and schedule across every social platform — fully hands-free.",
-    color: "#ec4899",
-  },
-  {
-    icon: Activity,
-    title: "Real-time Analytics",
-    subtitle: "DECISIONS AT THE SPEED OF DATA",
-    desc: "Live dashboards that surface what matters — predictive insights, anomaly alerts, and revenue intelligence.",
-    color: "#06b6d4",
-  },
-];
+const serviceKeys = [
+  { icon: Zap, key: "s1", color: "#f59e0b" },
+  { icon: Monitor, key: "s2", color: "#3b82f6" },
+  { icon: BarChart3, key: "s3", color: "#8b5cf6" },
+  { icon: Link2, key: "s4", color: "#10b981" },
+  { icon: PenTool, key: "s5", color: "#ec4899" },
+  { icon: Activity, key: "s6", color: "#06b6d4" },
+] as const;
 
 function Services() {
+  const { lang } = useLang();
   return (
-    <section id="services" className="py-28 md:py-40 bg-white">
+    <section id="services" className="py-28 md:py-40 bg-background">
       <div className="max-w-6xl mx-auto px-6">
         <FadeUp>
           <p className="text-sm uppercase tracking-[0.3em] font-medium text-muted-foreground mb-4">
-            What We Build
+            {t("services.label", lang)}
           </p>
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight">
-            Systems that do the work
+            {t("services.title", lang)}
           </h2>
           <p className="mt-6 text-lg text-muted-foreground max-w-2xl">
-            Not flashy demos — real systems that plug into real workflows and
-            deliver measurable results.
+            {t("services.desc", lang)}
           </p>
         </FadeUp>
 
         <div className="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {services.map((s, i) => (
-            <FadeUp key={s.title} delay={0.08 * i}>
-              <div className="service-card p-10 rounded-xl border border-border bg-white h-full flex flex-col">
+          {serviceKeys.map((s, i) => (
+            <FadeUp key={s.key} delay={0.08 * i}>
+              <div className="service-card p-10 rounded-xl border border-border bg-background h-full flex flex-col">
                 <div
                   className="w-12 h-12 rounded-xl flex items-center justify-center"
                   style={{ backgroundColor: s.color + "15" }}
@@ -473,11 +480,11 @@ function Services() {
                   <s.icon size={24} style={{ color: s.color }} />
                 </div>
                 <p className="mt-4 text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
-                  {s.subtitle}
+                  {t(`services.${s.key}.sub` as any, lang)}
                 </p>
-                <h3 className="mt-2 text-xl font-semibold">{s.title}</h3>
+                <h3 className="mt-2 text-xl font-semibold">{t(`services.${s.key}.title` as any, lang)}</h3>
                 <p className="mt-3 text-sm text-muted-foreground leading-relaxed flex-1">
-                  {s.desc}
+                  {t(`services.${s.key}.desc` as any, lang)}
                 </p>
               </div>
             </FadeUp>
@@ -489,145 +496,121 @@ function Services() {
 }
 
 /* ──────────────────────────── INDUSTRIES ──────────────────────────── */
-const industries = [
+const industryKeys = [
   {
     id: "marketing",
     icon: Megaphone,
-    label: "Marketing & Social",
-    tagline: "ALWAYS-ON CONTENT ENGINE",
-    desc: "AI auto-aggregates trending topics, generates on-brand content, visuals, and short-form video, then schedules everything across all your social platforms — hands-free.",
+    key: "marketing",
     before: "16 hrs",
-    beforeLabel: "Weekly content time",
     after: "20 min",
-    afterLabel: "Hands-on time saved",
     savings: "98%",
     metrics: [
-      { label: "Content Output", value: "+340%", highlight: false },
-      { label: "Engagement Rate", value: "+67%", highlight: false },
-      { label: "Time Saved", value: "98%", highlight: true },
+      { value: "+340%", highlight: false, mKey: "m1" },
+      { value: "+67%", highlight: false, mKey: "m2" },
+      { value: "98%", highlight: true, mKey: "m3" },
     ],
   },
   {
     id: "property",
     icon: HomeIcon,
-    label: "Property Management",
-    tagline: "FROM INVENTORY TO INSIGHTS",
-    desc: "AI-managed listings, dynamic pricing, and booking sync across Airbnb, Booking.com, Agoda — all from one dashboard.",
+    key: "property",
     before: "90 min",
-    beforeLabel: "Daily manual updates",
     after: "Real-time",
-    afterLabel: "No more manual updates",
     savings: "100%",
     metrics: [
-      { label: "Occupancy Rate", value: "94%", highlight: false },
-      { label: "Revenue Growth", value: "+38%", highlight: true },
-      { label: "Time Saved", value: "100%", highlight: false },
+      { value: "94%", highlight: false, mKey: "m1" },
+      { value: "+38%", highlight: true, mKey: "m2" },
+      { value: "100%", highlight: false, mKey: "m3" },
     ],
   },
   {
     id: "fnb",
     icon: UtensilsCrossed,
-    label: "Food & Beverage",
-    tagline: "PREDICT BEFORE IT BREAKS",
-    desc: "Demand forecasting, automated stock reordering, and waste reduction. Your kitchen runs itself.",
+    key: "fnb",
     before: "2 hrs",
-    beforeLabel: "Daily inventory check",
     after: "5 min",
-    afterLabel: "Daily time saved",
     savings: "96%",
     metrics: [
-      { label: "Waste Reduction", value: "-34%", highlight: true },
-      { label: "Orders Processed", value: "342/day", highlight: false },
-      { label: "Revenue", value: "RM 18.4K", highlight: false },
+      { value: "-34%", highlight: true, mKey: "m1" },
+      { value: "342/day", highlight: false, mKey: "m2" },
+      { value: "RM 18.4K", highlight: false, mKey: "m3" },
     ],
   },
   {
     id: "finance",
     icon: Landmark,
-    label: "Investment & Finance",
-    tagline: "EVERY ROUTE, OPTIMIZED",
-    desc: "Automated deal flow analysis, portfolio monitoring, valuation models, and investor-ready report generation.",
+    key: "finance",
     before: "8 hrs",
-    beforeLabel: "Quarterly report",
     after: "12 min",
-    afterLabel: "Report turnaround",
     savings: "97%",
     metrics: [
-      { label: "Pipeline", value: "RM 24M", highlight: false },
-      { label: "IRR", value: "22.4%", highlight: true },
-      { label: "Auto Reports", value: "6", highlight: false },
+      { value: "RM 24M", highlight: false, mKey: "m1" },
+      { value: "22.4%", highlight: true, mKey: "m2" },
+      { value: "6", highlight: false, mKey: "m3" },
     ],
   },
   {
     id: "retail",
     icon: ShoppingCart,
-    label: "Retail & E-commerce",
-    tagline: "SELL SMARTER, STOCK BETTER",
-    desc: "Sales forecasting, inventory intelligence, dynamic promotions, and zero-stockout operations.",
+    key: "retail",
     before: "4 hrs",
-    beforeLabel: "Weekly stock analysis",
     after: "10 min",
-    afterLabel: "Weekly time saved",
     savings: "96%",
     metrics: [
-      { label: "Revenue", value: "RM 48K", highlight: true },
-      { label: "Orders", value: "+15%", highlight: false },
-      { label: "Stockouts", value: "0", highlight: false },
+      { value: "RM 48K", highlight: true, mKey: "m1" },
+      { value: "+15%", highlight: false, mKey: "m2" },
+      { value: "0", highlight: false, mKey: "m3" },
     ],
   },
   {
     id: "education",
     icon: GraduationCap,
-    label: "Education & Training",
-    tagline: "SCALE LEARNING, NOT ADMIN",
-    desc: "Student progress tracking, at-risk detection, automated communications, and course performance analytics.",
+    key: "education",
     before: "30 min",
-    beforeLabel: "Per student report",
     after: "2 min",
-    afterLabel: "Reporting time saved",
     savings: "93%",
     metrics: [
-      { label: "Students", value: "1,842", highlight: false },
-      { label: "Completion", value: "89%", highlight: true },
-      { label: "At-Risk Detected", value: "23", highlight: false },
+      { value: "1,842", highlight: false, mKey: "m1" },
+      { value: "89%", highlight: true, mKey: "m2" },
+      { value: "23", highlight: false, mKey: "m3" },
     ],
   },
 ];
 
 function Industries() {
   const [active, setActive] = useState(0);
-  const ind = industries[active];
+  const { lang } = useLang();
+  const ind = industryKeys[active];
 
   return (
     <section id="industries" className="py-28 md:py-40 bg-muted/50">
       <div className="max-w-6xl mx-auto px-6">
         <FadeUp>
           <p className="text-sm uppercase tracking-[0.3em] font-medium text-muted-foreground mb-4">
-            Industries We Serve
+            {t("industries.label", lang)}
           </p>
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight">
-            AI molded to your industry
+            {t("industries.title", lang)}
           </h2>
           <p className="mt-6 text-lg text-muted-foreground max-w-2xl">
-            We don't do one-size-fits-all. Every solution is built around the
-            patterns and pain points of your specific vertical.
+            {t("industries.desc", lang)}
           </p>
         </FadeUp>
 
         {/* Tabs */}
         <div className="mt-16 flex flex-wrap gap-3">
-          {industries.map((ind, i) => (
+          {industryKeys.map((ind, i) => (
             <button
               key={ind.id}
               onClick={() => setActive(i)}
               className={`industry-tab inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium border ${
                 active === i
                   ? "bg-foreground text-background border-foreground"
-                  : "bg-white text-muted-foreground border-border hover:border-foreground/30"
+                  : "bg-background text-muted-foreground border-border hover:border-foreground/30"
               }`}
             >
               <ind.icon size={16} />
-              <span className="hidden sm:inline">{ind.label}</span>
+              <span className="hidden sm:inline">{t(`ind.${ind.key}.label` as any, lang)}</span>
             </button>
           ))}
         </div>
@@ -639,33 +622,33 @@ function Industries() {
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
               <div>
                 <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
-                  {ind.tagline}
+                  {t(`ind.${ind.key}.tagline` as any, lang)}
                 </p>
                 <h3 className="mt-2 text-2xl md:text-3xl font-bold">
-                  {ind.label}
+                  {t(`ind.${ind.key}.label` as any, lang)}
                 </h3>
                 <p className="mt-3 text-muted-foreground leading-relaxed max-w-xl">
-                  {ind.desc}
+                  {t(`ind.${ind.key}.desc` as any, lang)}
                 </p>
               </div>
               {/* Savings badge */}
               <div className="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-green-50 text-green-700 text-sm font-semibold">
                 <CheckCircle2 size={16} />
-                <AnimatedCounter end={parseInt(ind.savings)} suffix="%" /> time savings
+                <AnimatedCounter end={parseInt(ind.savings)} suffix="%" /> {t("industries.timeSavings", lang)}
               </div>
             </div>
 
             {/* Before/After + Metrics in a single row */}
             <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-              <div className="col-span-1 p-5 rounded-xl bg-white border border-border">
-                <p className="text-xs text-muted-foreground uppercase tracking-wider">Before</p>
+              <div className="col-span-1 p-5 rounded-xl bg-background border border-border">
+                <p className="text-xs text-muted-foreground uppercase tracking-wider">{t("industries.before", lang)}</p>
                 <p className="mt-1 text-2xl font-bold text-red-500">{ind.before}</p>
-                <p className="text-xs text-muted-foreground">{ind.beforeLabel}</p>
+                <p className="text-xs text-muted-foreground">{t(`ind.${ind.key}.beforeLabel` as any, lang)}</p>
               </div>
               <div className="col-span-1 p-5 rounded-xl bg-foreground text-background">
-                <p className="text-xs uppercase tracking-wider opacity-70">After</p>
+                <p className="text-xs uppercase tracking-wider opacity-70">{t("industries.after", lang)}</p>
                 <p className="mt-1 text-2xl font-bold">{ind.after}</p>
-                <p className="text-xs opacity-70">{ind.afterLabel}</p>
+                <p className="text-xs opacity-70">{t(`ind.${ind.key}.afterLabel` as any, lang)}</p>
               </div>
               {ind.metrics.map((m, i) => (
                 <div
@@ -673,11 +656,11 @@ function Industries() {
                   className={`col-span-1 p-5 rounded-xl border ${
                     m.highlight
                       ? "bg-foreground text-background border-foreground"
-                      : "bg-white border-border"
+                      : "bg-background border-border"
                   }`}
                 >
                   <p className={`text-xs uppercase tracking-wider ${m.highlight ? "opacity-70" : "text-muted-foreground"}`}>
-                    {m.label}
+                    {t(`ind.${ind.key}.${m.mKey}` as any, lang)}
                   </p>
                   <p className="mt-1 text-2xl font-bold">{m.value}</p>
                 </div>
@@ -688,9 +671,9 @@ function Industries() {
 
         <FadeUp delay={0.2}>
           <p className="mt-16 text-center text-muted-foreground">
-            Don't see your industry?{" "}
+            {t("industries.notListed", lang)}{" "}
             <a href="#contact" className="underline hover:text-foreground">
-              We adapt to any vertical.
+              {t("industries.adapt", lang)}
             </a>
           </p>
         </FadeUp>
@@ -700,54 +683,34 @@ function Industries() {
 }
 
 /* ──────────────────────────── PROCESS ──────────────────────────── */
-const steps = [
-  {
-    num: "01",
-    title: "Discover",
-    desc: "We map your operations — identify bottlenecks, repetitive tasks, and high-impact automation opportunities.",
-    icon: Sparkles,
-  },
-  {
-    num: "02",
-    title: "Design",
-    desc: "We architect a solution tailored to your workflow — choosing the right AI models, integrations, and interfaces.",
-    icon: Monitor,
-  },
-  {
-    num: "03",
-    title: "Build",
-    desc: "We develop, test, and deploy your system. Real software, real integrations, real results.",
-    icon: Cog,
-  },
-  {
-    num: "04",
-    title: "Scale",
-    desc: "We monitor, optimize, and expand. As your business grows, your AI grows with it.",
-    icon: TrendingUp,
-  },
+const stepKeys = [
+  { num: "01", key: "step1", icon: Sparkles },
+  { num: "02", key: "step2", icon: Monitor },
+  { num: "03", key: "step3", icon: Cog },
+  { num: "04", key: "step4", icon: TrendingUp },
 ];
 
 function Process() {
+  const { lang } = useLang();
   return (
-    <section id="process" className="py-28 md:py-40 bg-white">
+    <section id="process" className="py-28 md:py-40 bg-background">
       <div className="max-w-6xl mx-auto px-6">
         <FadeUp>
           <p className="text-sm uppercase tracking-[0.3em] font-medium text-muted-foreground mb-4">
-            How It Works
+            {t("process.label", lang)}
           </p>
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight">
-            From discovery to deployment
+            {t("process.title", lang)}
           </h2>
           <p className="mt-6 text-lg text-muted-foreground max-w-2xl">
-            A proven four-step process that turns operational friction into
-            automated efficiency.
+            {t("process.desc", lang)}
           </p>
         </FadeUp>
 
         <div className="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-          {steps.map((s, i) => (
+          {stepKeys.map((s, i) => (
             <FadeUp key={s.num} delay={0.1 * i}>
-              <div className="relative p-10 rounded-xl border border-border bg-white service-card h-full">
+              <div className="relative p-10 rounded-xl border border-border bg-background service-card h-full">
                 {/* Step number */}
                 <span className="text-5xl font-bold text-muted-foreground/10 absolute top-4 right-4">
                   {s.num}
@@ -755,11 +718,11 @@ function Process() {
                 <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center">
                   <s.icon size={24} className="text-foreground" />
                 </div>
-                <h3 className="mt-4 text-xl font-semibold">{s.title}</h3>
+                <h3 className="mt-4 text-xl font-semibold">{t(`process.${s.key}.title` as any, lang)}</h3>
                 <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-                  {s.desc}
+                  {t(`process.${s.key}.desc` as any, lang)}
                 </p>
-                {i < steps.length - 1 && (
+                {i < stepKeys.length - 1 && (
                   <div className="hidden lg:block absolute -right-4 top-1/2 -translate-y-1/2">
                     <ArrowRight size={16} className="text-muted-foreground/30" />
                   </div>
@@ -774,66 +737,42 @@ function Process() {
 }
 
 /* ──────────────────────────── WHY US ──────────────────────────── */
-const whyUs = [
-  {
-    icon: Shield,
-    title: "Results in weeks, not months",
-    desc: "First working system deployed fast. Then we refine based on real data — not guesswork.",
-  },
-  {
-    icon: Users,
-    title: "One partner, infinite solutions",
-    desc: "From marketing to logistics to finance — one team that handles it all. No bouncing between vendors.",
-  },
-  {
-    icon: Zap,
-    title: "Real systems, not demos",
-    desc: "Production-grade software that runs your business — not flashy prototypes that fall apart at scale.",
-  },
-  {
-    icon: Building2,
-    title: "Built for Malaysian businesses",
-    desc: "We understand local markets, regulations, and workflows — not imported templates.",
-  },
-  {
-    icon: Clock,
-    title: "Ship fast, iterate faster",
-    desc: "First working version in weeks. Then we refine based on real usage — not guesswork.",
-  },
-  {
-    icon: TrendingUp,
-    title: "ROI in weeks",
-    desc: "Our systems pay for themselves fast. If we can't show clear value, we'll tell you upfront.",
-  },
+const whyUsKeys = [
+  { icon: Shield, key: "w1" },
+  { icon: Users, key: "w2" },
+  { icon: Zap, key: "w3" },
+  { icon: Building2, key: "w4" },
+  { icon: Clock, key: "w5" },
+  { icon: TrendingUp, key: "w6" },
 ];
 
 function WhyUs() {
+  const { lang } = useLang();
   return (
     <section id="why-us" className="py-28 md:py-40 bg-muted/50">
       <div className="max-w-6xl mx-auto px-6">
         <FadeUp>
           <p className="text-sm uppercase tracking-[0.3em] font-medium text-muted-foreground mb-4">
-            Why AI Labs
+            {t("whyUs.label", lang)}
           </p>
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight">
-            Built different
+            {t("whyUs.title", lang)}
           </h2>
           <p className="mt-6 text-lg text-muted-foreground max-w-2xl">
-            We don't just bolt AI onto your stack. We engineer systems that
-            become the backbone of your operations.
+            {t("whyUs.desc", lang)}
           </p>
         </FadeUp>
 
         <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {whyUs.map((w, i) => (
-            <FadeUp key={w.title} delay={0.08 * i}>
-              <div className="p-10 rounded-xl bg-white border border-border service-card h-full">
+          {whyUsKeys.map((w, i) => (
+            <FadeUp key={w.key} delay={0.08 * i}>
+              <div className="p-10 rounded-xl bg-background border border-border service-card h-full">
                 <div className="w-10 h-10 rounded-lg bg-foreground/5 flex items-center justify-center">
                   <w.icon size={20} className="text-foreground" />
                 </div>
-                <h3 className="mt-4 text-lg font-semibold">{w.title}</h3>
+                <h3 className="mt-4 text-lg font-semibold">{t(`whyUs.${w.key}.title` as any, lang)}</h3>
                 <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-                  {w.desc}
+                  {t(`whyUs.${w.key}.desc` as any, lang)}
                 </p>
               </div>
             </FadeUp>
@@ -846,19 +785,19 @@ function WhyUs() {
 
 /* ──────────────────────────── CTA / CONTACT ──────────────────────────── */
 function Contact() {
+  const { lang } = useLang();
   return (
     <section id="contact" className="py-28 md:py-40 bg-foreground text-background">
       <div className="max-w-4xl mx-auto px-6 text-center">
         <FadeUp>
           <p className="text-sm uppercase tracking-[0.3em] font-medium opacity-70 mb-4">
-            Let's Talk
+            {t("contact.label", lang)}
           </p>
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight">
-            Ready to automate?
+            {t("contact.title", lang)}
           </h2>
           <p className="mt-4 text-lg opacity-70 max-w-xl mx-auto">
-            Tell us about your operations. We'll show you what AI can do for
-            your business — no fluff, just a real conversation.
+            {t("contact.desc", lang)}
           </p>
         </FadeUp>
 
@@ -870,7 +809,7 @@ function Contact() {
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center rounded-lg bg-background text-foreground px-8 py-4 text-base font-medium hover:opacity-90 transition-all"
             >
-              Book a Consultation
+              {t("contact.book", lang)}
               <ArrowRight size={18} className="ml-2" />
             </a>
           </div>
@@ -882,8 +821,9 @@ function Contact() {
 
 /* ──────────────────────────── FOOTER ──────────────────────────── */
 function Footer() {
+  const { lang } = useLang();
   return (
-    <footer className="py-16 px-6 border-t border-border bg-white">
+    <footer className="py-16 px-6 border-t border-border bg-background">
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
@@ -893,30 +833,30 @@ function Footer() {
 
           <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
             <a href="#about" className="hover:text-foreground transition-colors">
-              About
+              {t("footer.about", lang)}
             </a>
             <a href="#services" className="hover:text-foreground transition-colors">
-              Services
+              {t("footer.services", lang)}
             </a>
             <a href="#industries" className="hover:text-foreground transition-colors">
-              Industries
+              {t("footer.industries", lang)}
             </a>
             <a href="#process" className="hover:text-foreground transition-colors">
-              Process
+              {t("footer.process", lang)}
             </a>
             <a href="#contact" className="hover:text-foreground transition-colors">
-              Contact
+              {t("footer.contact", lang)}
             </a>
           </div>
 
           <p className="text-xs text-muted-foreground">
-            © 2026 AI Labs. All rights reserved.
+            {t("footer.copyright", lang)}
           </p>
         </div>
 
         <div className="mt-12 pt-8 border-t border-border text-center">
           <p className="text-xs text-muted-foreground/50">
-            Powered by{" "}
+            {t("footer.poweredBy", lang)}{" "}
             <a
               href="https://www.runestack.tech"
               target="_blank"
@@ -935,16 +875,18 @@ function Footer() {
 /* ──────────────────────────── MAIN PAGE ──────────────────────────── */
 export default function Home() {
   return (
-    <main>
-      <Navbar />
-      <Hero />
-      <About />
-      <Services />
-      <Industries />
-      <Process />
-      <WhyUs />
-      <Contact />
-      <Footer />
-    </main>
+    <LangProvider>
+      <main>
+        <Navbar />
+        <Hero />
+        <About />
+        <Services />
+        <Industries />
+        <Process />
+        <WhyUs />
+        <Contact />
+        <Footer />
+      </main>
+    </LangProvider>
   );
 }
