@@ -291,7 +291,7 @@ function Navbar() {
 
 /* ──────────────────────────── HERO ──────────────────────────── */
 function Hero() {
-  const { lang } = useLang();
+  const { lang, dark } = useLang();
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background py-24 md:py-32">
       {/* Subtle grid background */}
@@ -299,7 +299,7 @@ function Hero() {
         className="absolute inset-0 opacity-[0.03]"
         style={{
           backgroundImage:
-            "linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)",
+            `linear-gradient(${dark ? '#fff' : '#000'} 1px, transparent 1px), linear-gradient(90deg, ${dark ? '#fff' : '#000'} 1px, transparent 1px)`,
           backgroundSize: "60px 60px",
         }}
       />
